@@ -1,8 +1,7 @@
-// next.config.js
+// next.config.js → REMOVE "output: 'export'"
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  distDir: 'out',
+  // No output field → enables server-side rendering
 };
 
-module.exports = next;
+module.exports = nextConfig;
