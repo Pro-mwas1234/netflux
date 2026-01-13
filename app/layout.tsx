@@ -1,9 +1,10 @@
+// app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Netflux',
-  description: 'Movie streaming',
+  description: 'Stream movies and series',
 };
 
 export default function RootLayout({
