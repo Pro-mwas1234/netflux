@@ -1,60 +1,28 @@
 // app/movie/[id]/page.tsx
-'use client';
-
-import { useState, useEffect } from 'react';
-import TrailerModal from '@/components/TrailerModal';
 import Link from 'next/link';
-import { fetchMovieById } from '@/lib/tmdb';
 
-export default function MoviePage({ params }: { params: { id: string } }) {
-  const [movie, setMovie] = useState<any>(null);
-  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
-
-  useEffect(() => {
-    const loadMovie = async () => {
-      const data = await fetchMovieById(params.id);
-      setMovie(data);
-    };
-    loadMovie();
-  }, [params.id]);
-
-  if (!movie) return <div className="text-center mt-20">Loading...</div>;
-
-  // Find first YouTube trailer
-  const trailer = movie.videos?.results?.find(
-    (v: any) => v.type === 'Trailer' && v.site === 'YouTube'
-  );
+export default async function MoviePage({ params }: { params: { id: string } }) {
+  const { id } = params;
 
   return (
-    <div className="movie-detail">
-      <Link href="/" className="back-link">&larr; Back to Home</Link>
-      
-      <h1>{movie.title}</h1>
-      <p>{movie.overview}</p>
-      
-      {trailer && (
-        <button
-          onClick={() => setIsTrailerOpen(true)}
-          className="mt-4 px-4 py-2 bg-red-600 text-white rounded"
-        >
-          ▶️ Watch Trailer
-        </button>
-      )}
+    <div className="min-h-screen bg-[#1f1e1d] text-white p-4">
+      <Link href="/" className="text-red-500 mb-6 inline-block">
+        &larr; Back to Home
+      </Link>
 
-      {/* Where to watch */}
-      <div className="mt-6">
-        <h2>Where to Watch</h2>
-        <p>Stream on: Netflix, Prime Video, or Disney+</p>
-      </div>
+      <h1 className="text-2xl font-bold mb-4">Movie ID: {id}</h1>
 
-      {/* Trailer Modal */}
-      {trailer && (
-        <TrailerModal
-          isOpen={isTrailerOpen}
-          onClose={() => setIsTrailerOpen(false)}
-          videoId={trailer.key}
+      {/* ⚠️ TEMPORARY TEST ONLY — DO NOT DEPLOY */}
+      <div className="mt-6 border border-red-500 p-2">
+        <p className="text-yellow-300 mb-2">⚠️ Test Player (Will Likely Fail)</p>
+        <iframe
+          src={`https://player.moviesapi.to/embed/${id}`}
+          width="100%"
+          height="500"
+          allowFullScreen
+          className="rounded-lg"
         />
-      )}
+      </div>
     </div>
   );
 }
