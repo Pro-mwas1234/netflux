@@ -3,7 +3,6 @@ import Header from '@/components/Header';
 import MovieCard from '@/components/MovieCard';
 import { fetchTrendingMovies, fetchTrendingSeries } from '@/lib/tmdb';
 
-// Define TypeScript interface for media objects
 interface Media {
   id: number;
   title?: string;
@@ -29,7 +28,6 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* Hero Banner */}
       {hero && (
         <div className="hero">
           <img
@@ -43,10 +41,8 @@ export default async function HomePage() {
         </div>
       )}
 
-      {/* Main Content */}
       <Header />
       
-      {/* Trending Movies Section */}
       <section className="movie-section">
         <h2 className="section-title">Trending Movies</h2>
         <div className="movie-grid">
@@ -60,7 +56,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Trending Series Section */}
       <section className="movie-section">
         <h2 className="section-title">Trending Series</h2>
         <div className="movie-grid">
