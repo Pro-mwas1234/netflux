@@ -3,8 +3,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Watchify - Stream Movies',
-  description: 'Discover trending movies powered by TMDB',
+  title: 'Netflux',
+  description: 'Stream movies with TMDB',
 };
 
 export default function RootLayout({
@@ -14,9 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-900 text-white min-h-screen">
-        {children}
-      </body>
+      <body className="bg-gray-900 text-white min-h-screen">{children}</body>
     </html>
   );
 }
