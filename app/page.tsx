@@ -1,3 +1,4 @@
+// app/page.tsx
 import Header from '@/components/Header';
 import MovieCard from '@/components/MovieCard';
 import { fetchTrendingMovies } from '@/lib/tmdb';
@@ -9,6 +10,7 @@ export default async function HomePage() {
 
   return (
     <div>
+      {/* Hero Banner */}
       {hero && (
         <div className="hero">
           <img
@@ -22,12 +24,30 @@ export default async function HomePage() {
         </div>
       )}
 
+      {/* Main Content */}
       <Header />
-      <div className="movie-grid">
-        {movies.slice(1, 13).map((movie: any) => (
-          <MovieCard key={movie.id} movie={movie} />
-        ))}
-      </div>
+      
+      {/* Trending Movies Section */}
+      <section className="movie-section">
+        <h2 className="section-title">Trending Now</h2>
+        <div className="movie-grid">
+          {movies.slice(1, 30).map((movie: any) => ( // Show 29 movies
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      </section>
+
+      {/* Add more sections if needed */}
+      {/* 
+      <section className="movie-section">
+        <h2 className="section-title">Top Rated</h2>
+        <div className="movie-grid">
+          {topRatedMovies.map(movie => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      </section>
+      */}
     </div>
   );
 }
