@@ -4,33 +4,38 @@ import { fetchTrendingMovies } from '@/lib/tmdb';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// 👇 Define a minimal type for movie objects
+// Define minimal type for generateStaticParams
 interface Movie {
   id: number;
-  // Add other fields if needed, but id is all we use here
 }
 
 export async function generateStaticParams() {
   const data = await fetchTrendingMovies();
-  const movies: Movie[] = data.results || []; // 👈 Explicitly type the array
+  const movies: Movie[] = data.results || [];
 
   return movies.slice(0, 10).map((movie) => ({
-    id: movie.id.toString(), // Next.js expects string params
+    id: movie.id.toString(),
   }));
 }
 
-// ... rest of your component (unchanged)
 export default async function MoviePage({ params }: { params: { id: string } }) {
   const movie = await fetchMovieById(params.id);
   const backdrop = movie.backdrop_path
     ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
     : 'https://via.placeholder.com/1280x720?text=No+Backdrop';
-  const trailer = movie.videos?.results?.find((v: any) => v.type === 'Trailer' && v.site === 'YouTube');
+  const trailer = movie.videos?.results?.find(
+    (v: any) => v.type === 'Trailer' && v.site === 'YouTube'
+  );
 
   return (
     <div className="min-h-screen bg-gray-900">
       <div className="relative h-96 md:h-[500px]">
-        <Image src={backdrop} alt={movie.title} fill className="object-cover opacity-60" />
+        <Image
+          src={backdrop}
+          alt={movie.title}
+          fill
+          className="object-cover opacity-60"
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent"></div>
       </div>
 
@@ -45,7 +50,9 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
           />
           <div className="text-white">
             <h1 className="text-4xl font-bold">{movie.title}</h1>
-            <p className="text-gray-300 mt-2">{movie.release_date} • {movie.runtime} min</p>
+            <p className="text-gray-300 mt-2">
+              {movie.release_date} • {movie.runtime} min
+            </p>
             <p className="mt-4 text-lg">{movie.overview}</p>
             {trailer && (
               <a
@@ -62,7 +69,9 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
       </div>
 
       <div className="container mx-auto px-6 mt-12">
-        <Link href="/" className="text-red-500 hover:underline">&larr; Back to Home</Link>
+        <Link href="/" className="text-red-500 hover:underline">
+          &larr; Back to Home
+        </Link>
       </div>
     </div>
   );
