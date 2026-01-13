@@ -7,17 +7,18 @@ export default function MovieCard({ movie }: { movie: any }) {
     : 'https://via.placeholder.com/500x750?text=No+Poster';
 
   return (
-    <Link href={`/movie/${movie.id}`} className="w-44 flex-shrink-0 block">
+    <Link href={`/movie/${movie.id}`} className="movie-card w-48 flex-shrink-0">
       <img
         src={poster}
         alt={movie.title}
-        width={176}
-        height={264}
-        className="rounded-lg shadow-md hover:shadow-xl transition-shadow"
-        loading="lazy"
+        className="rounded-lg w-full"
       />
+      <div className="overlay rounded-lg">
+        <div className="play-button bg-white text-black rounded-full p-3">
+          ▶️
+        </div>
+      </div>
       <h3 className="mt-2 text-white text-sm font-medium truncate">{movie.title}</h3>
-      <p className="text-gray-400 text-xs">{movie.release_date?.substring(0, 4)}</p>
     </Link>
   );
 }
