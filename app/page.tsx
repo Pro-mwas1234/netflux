@@ -46,7 +46,7 @@ export default async function HomePage() {
       <section className="movie-section">
         <h2 className="section-title">Trending Movies</h2>
         <div className="movie-grid">
-          {movies.slice(1, 30).map((movie: Media) => (
+          {movies.slice(1, 30).map((movie) => (
             <MovieCard 
               key={movie.id} 
               movie={movie} 
@@ -59,7 +59,7 @@ export default async function HomePage() {
       <section className="movie-section">
         <h2 className="section-title">Trending Series</h2>
         <div className="movie-grid">
-          {series.slice(0, 30).map((show: Media) => (
+          {series.slice(0, 30).map((show) => (
             <MovieCard 
               key={show.id} 
               movie={show} 
