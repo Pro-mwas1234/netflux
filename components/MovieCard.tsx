@@ -2,16 +2,12 @@
 import Link from 'next/link';
 
 export default function MovieCard({ movie }: { movie: any }) {
-  const poster = movie.poster_path
-    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    : 'https://via.placeholder.com/500x750?text=No+Poster';
-
   return (
-    <Link href={`/movie/${movie.id}`}>
+    <Link href={`/movie/${movie.id}`} className="block">
       <img
-        src={poster}
+        src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
         alt={movie.title}
-        className="imag-lists"
+        className="w-full rounded-lg"
       />
     </Link>
   );
