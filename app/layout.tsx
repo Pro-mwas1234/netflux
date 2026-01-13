@@ -1,7 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 
-export const meta Metadata = {
+export const meta: Metadata = {
   title: 'Netflux',
   description: 'Movie streaming',
 };
