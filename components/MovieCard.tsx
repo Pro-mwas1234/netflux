@@ -10,7 +10,7 @@ export default function MovieCard({ movie, type = "movie" }: { movie: any; type?
   return (
     <>
       <div 
-        className="movie-card cursor-pointer"
+        className="movie-card"
         onClick={() => setIsModalOpen(true)}
       >
         <img
