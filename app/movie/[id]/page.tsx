@@ -16,7 +16,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
       <div className="mt-6 border border-red-500 p-2">
         <p className="text-yellow-300 mb-2">⚠️ Test Player (Will Likely Fail)</p>
         <iframe
-          src={`https://player.moviesapi.to/embed/${id}`}
+          src={`https://moviesapi.to/movie/${id}`}
           width="100%"
           height="500"
           allowFullScreen
