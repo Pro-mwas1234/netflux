@@ -31,23 +31,11 @@ export default async function HomePage() {
       <section className="movie-section">
         <h2 className="section-title">Trending Now</h2>
         <div className="movie-grid">
-          {movies.slice(1, 30).map((movie: any) => ( // Show 29 movies
+          {movies.slice(1, 30).map((movie: any) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
       </section>
-
-      {/* Add more sections if needed */}
-      {/* 
-      <section className="movie-section">
-        <h2 className="section-title">Top Rated</h2>
-        <div className="movie-grid">
-          {topRatedMovies.map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
-      </section>
-      */}
     </div>
   );
 }
