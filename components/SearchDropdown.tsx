@@ -10,7 +10,6 @@ export default function SearchDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch results
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -22,7 +21,7 @@ export default function SearchDropdown() {
       try {
         const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
         const data = await res.json();
-        setResults(data.results?.slice(0, 20) || []); // Show more results
+        setResults(data.results?.slice(0, 20) || []);
         setIsOpen(true);
       } catch (error) {
         console.error('Search failed:', error);
@@ -33,7 +32,6 @@ export default function SearchDropdown() {
     return () => clearTimeout(handler);
   }, [query]);
 
-  // Close on Escape key
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setIsOpen(false);
@@ -44,7 +42,6 @@ export default function SearchDropdown() {
 
   return (
     <>
-      {/* Search Input */}
       <div ref={containerRef} style={{ position: 'relative', width: '100%', maxWidth: '256px' }}>
         <div style={{ position: 'relative' }}>
           <input
@@ -95,7 +92,6 @@ export default function SearchDropdown() {
         </div>
       </div>
 
-      {/* Full-Screen Overlay */}
       {isOpen && (
         <div 
           style={{
@@ -104,7 +100,7 @@ export default function SearchDropdown() {
             left: 0,
             width: '100vw',
             height: '100vh',
-            backgroundColor: 'rgba(0, 0, 0, 0.85)', // Transparent black
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
             zIndex: 1000,
@@ -125,7 +121,7 @@ export default function SearchDropdown() {
               gap: '24px',
               padding: '20px'
             }}
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking results
+            onClick={(e) => e.stopPropagation()}
           >
             {results.length > 0 ? (
               results.map((movie) => (
@@ -136,10 +132,7 @@ export default function SearchDropdown() {
                     setQuery('');
                     setIsOpen(false);
                   }}
-                  style={{
-                    textDecoration: 'none',
-                    color: 'white'
-                  }}
+                  style={{ textDecoration: 'none', color: 'white' }}
                 >
                   <div style={{
                     position: 'relative',
@@ -147,7 +140,6 @@ export default function SearchDropdown() {
                     borderRadius: '8px',
                     overflow: 'hidden',
                     border: '2px solid transparent',
-                    transition: 'border-color 0.3s ease',
                   }}>
                     {movie.poster_path ? (
                       <img
