@@ -2,7 +2,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { fetchMovieById } from '@/lib/tmdb';
 
 interface MovieModalProps {
   isOpen: boolean;
@@ -22,7 +21,10 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
     setLoading(true);
     const loadMedia = async () => {
       try {
-        const data = await fetchMovieById(mediaId);
+        // ✅ Use your own API route (not TMDB directly)
+        const res = await fetch(`/api/media/${mediaId}`);
+        if (!res.ok) throw new Error('Failed to load media');
+        const data = await res.json();
         setMedia(data);
       } catch (err) {
         console.error('Failed to load media', err);
@@ -53,6 +55,8 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
 
         {loading ? (
           <div className="p-8 text-center text-gray-400">Loading details...</div>
+        ) : media?.error ? (
+          <div className="p-8 text-center text-red-400">Failed to load media details</div>
         ) : media ? (
           <div className="p-6">
             <div className="flex flex-col md:flex-row gap-6">
@@ -123,7 +127,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
             </div>
           </div>
         ) : (
-          <div className="p-8 text-center text-red-400">Failed to load media details</div>
+          <div className="p-8 text-center text-red-400">No media data available</div>
         )}
       </div>
     </div>
