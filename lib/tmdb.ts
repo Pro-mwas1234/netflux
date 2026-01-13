@@ -1,6 +1,6 @@
 // lib/tmdb.ts
 const API_KEY = process.env.TMDB_API_KEY;
-const BASE_URL = process.env.TMDB_BASE_URL;
+const BASE_URL = 'https://api.themoviedb.org/3';
 
 if (!API_KEY) {
   throw new Error('TMDB_API_KEY is missing in environment variables');
@@ -10,7 +10,7 @@ if (!API_KEY) {
 export async function fetchTrendingMovies() {
   const res = await fetch(
     `${BASE_URL}/trending/movie/day?api_key=${API_KEY}&language=en-US`,
-    { next: { revalidate: 3600 } } // Revalidate every hour
+    { next: { revalidate: 3600 } }
   );
   
   if (!res.ok) {
@@ -20,14 +20,28 @@ export async function fetchTrendingMovies() {
   return res.json();
 }
 
-// Fetch movie details by ID
+// Fetch trending TV series for homepage
+export async function fetchTrendingSeries() {
+  const res = await fetch(
+    `${BASE_URL}/trending/tv/day?api_key=${API_KEY}&language=en-US`,
+    { next: { revalidate: 3600 } }
+  );
+  
+  if (!res.ok) {
+    throw new Error('Failed to fetch trending series');
+  }
+  
+  return res.json();
+}
+
+// Fetch movie/series details by ID (works for both)
 export async function fetchMovieById(id: string) {
   const res = await fetch(
     `${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US&append_to_response=videos,credits`
   );
   
   if (!res.ok) {
-    throw new Error('Failed to fetch movie details');
+    throw new Error('Failed to fetch media details');
   }
   
   return res.json();
@@ -45,19 +59,6 @@ export async function searchMovies(query: string) {
   
   if (!res.ok) {
     throw new Error('Failed to search movies');
-  }
-  
-  return res.json();
-}
-
-// Optional: Fetch watch providers (where to stream legally)
-export async function fetchWatchProviders(movieId: string) {
-  const res = await fetch(
-    `${BASE_URL}/movie/${movieId}/watch/providers?api_key=${API_KEY}`
-  );
-  
-  if (!res.ok) {
-    throw new Error('Failed to fetch watch providers');
   }
   
   return res.json();
