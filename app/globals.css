@@ -9,6 +9,16 @@
   font-family: "Poppins", sans-serif;
 }
 
+:root {
+  --blur-strength: 10px;
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(var(--blur-strength));
+  -webkit-backdrop-filter: blur(var(--blur-strength));
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
 a {
   color: inherit;
 }
@@ -19,16 +29,183 @@ body {
   overflow-x: hidden;
 }
 
-/* Keep your custom classes */
-.backdrop-blur {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background-color: rgba(0, 0, 0, 0.3);
+/* === HEADER === */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 317px 7px 7px;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  z-index: 23;
+  background: transparent;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
 }
 
-/* ... include all your other custom classes here ... */
+.topbar.scrolled {
+  background: #87878742;
+  backdrop-filter: blur(17px);
+  -webkit-backdrop-filter: blur(17px);
+}
 
-/* Mobile responsive styles */
+.my-logo {
+  background: transparent;
+  font-weight: 900;
+  font-size: 40px;
+  padding: 4px;
+  color: #e50914;
+}
+
+.right-stuffs {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.userimge {
+  width: 41px;
+  height: 41px;
+  object-fit: cover;
+  border-radius: 50px;
+}
+
+/* === HERO & CARDS === */
+.barners {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.barner-image {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+  position: fixed;
+  filter: brightness(0.7);
+}
+
+.movie-details {
+  position: fixed;
+  z-index: 7;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(9deg, #1f1e1d, transparent);
+  display: flex;
+  align-items: end;
+  padding: 3%;
+  padding-bottom: 10%;
+}
+
+.movie-name {
+  font-size: 51px;
+  font-weight: 700;
+}
+
+.movie-description {
+  font-size: 14px;
+  font-weight: 300;
+  width: 79%;
+}
+
+.action-btns {
+  display: flex;
+  gap: 13px;
+  padding-top: 10px;
+}
+
+.action-btns button {
+  padding: 9px 28px;
+  border-radius: 33px;
+  border: 1px solid white;
+  background: transparent;
+  color: white;
+  gap: 5px;
+  display: flex;
+  align-items: center;
+  transition: all ease 0.8s;
+}
+
+.action-btns button#watch:hover {
+  background: #ffffff5e;
+  cursor: pointer;
+}
+
+/* === MOVIE LIST === */
+.list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  padding: 11px 32px 32px;
+  position: relative;
+  z-index: 5;
+  padding-top: 9vh;
+  gap: 20px;
+}
+
+.imag-lists {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+  transition: transform 0.2s ease;
+}
+
+.imag-lists:hover {
+  transform: scale(1.05);
+}
+
+/* === TRAILER MODAL === */
+.trailer-container {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.trailer-video {
+  position: absolute;
+  z-index: 5;
+  border: none;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+
+.close-trailer {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.close-trailer:hover {
+  background: rgba(0, 0, 0, 0.9);
+}
+
+/* === MOBILE RESPONSIVE === */
 @media screen and (max-width: 600px) {
-  /* ... your mobile styles ... */
+  .list {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 13px;
+  }
+
+  .movie-name {
+    font-size: 34px;
+  }
+
+  .topbar {
+    padding-right: 15px;
+  }
 }
