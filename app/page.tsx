@@ -1,6 +1,10 @@
 // app/page.tsx
+'use client'; // ← Add this at top
+
+import { useState } from 'react';
 import Header from '@/components/Header';
 import MovieCard from '@/components/MovieCard';
+import MovieModal from '@/components/MovieModal';
 import { fetchTrendingMovies, fetchTrendingSeries } from '@/lib/tmdb';
 
 interface Media {
@@ -26,6 +30,21 @@ export default async function HomePage() {
   const series: Media[] = seriesData.results || [];
   const hero = movies[0];
 
+  // ✅ Global modal state
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    mediaId: '',
+    type: 'movie' as 'movie' | 'tv'
+  });
+
+  const openModal = (id: string, type: 'movie' | 'tv') => {
+    setModalState({ isOpen: true, mediaId: id, type });
+  };
+
+  const closeModal = () => {
+    setModalState({ isOpen: false, mediaId: '', type: 'movie' });
+  };
+
   return (
     <div>
       {hero && (
@@ -50,7 +69,8 @@ export default async function HomePage() {
             <MovieCard 
               key={movie.id} 
               movie={movie} 
-              type="movie" 
+              type="movie"
+              onClick={() => openModal(movie.id.toString(), 'movie')}
             />
           ))}
         </div>
@@ -63,11 +83,20 @@ export default async function HomePage() {
             <MovieCard 
               key={show.id} 
               movie={show} 
-              type="tv" 
+              type="tv"
+              onClick={() => openModal(show.id.toString(), 'tv')}
             />
           ))}
         </div>
       </section>
+
+      {/* ✅ Render modal at root level */}
+      <MovieModal
+        isOpen={modalState.isOpen}
+        onClose={closeModal}
+        mediaId={modalState.mediaId}
+        type={modalState.type}
+      />
     </div>
   );
 }
