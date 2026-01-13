@@ -15,9 +15,15 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
   const [loading, setLoading] = useState(true);
   const [selectedSeason, setSelectedSeason] = useState<number>(1);
 
+  // ✅ Always call hooks at top level (fixes React #310)
   useEffect(() => {
-    if (!isOpen) return;
-    
+    if (!isOpen) {
+      // Reset state when closed
+      setMedia(null);
+      setLoading(true);
+      return;
+    }
+
     setLoading(true);
     const loadMedia = async () => {
       try {
@@ -25,7 +31,6 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
         if (!res.ok) throw new Error('Failed to load media');
         const data = await res.json();
         setMedia(data);
-        // Set default season for TV shows
         if (type === 'tv' && data.number_of_seasons) {
           setSelectedSeason(1);
         }
@@ -38,9 +43,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
     loadMedia();
   }, [isOpen, mediaId, type]);
 
-  if (!isOpen) return null;
-
-  // Prevent background scroll when modal is open
+  // Prevent background scroll
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -52,13 +55,18 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
     };
   }, [isOpen]);
 
+  // ✅ Conditionally render JSX (not hooks)
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80"
+      onClick={onClose}
+    >
       <div 
         className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#1f1e1d] rounded-xl border border-gray-800"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 text-white text-2xl hover:text-gray-300"
@@ -73,7 +81,6 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
         ) : media ? (
           <div className="p-6">
             <div className="flex flex-col md:flex-row gap-8">
-              {/* Poster */}
               <div className="md:w-1/3 flex-shrink-0">
                 <img
                   src={
@@ -86,7 +93,6 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                 />
               </div>
 
-              {/* Details */}
               <div className="md:w-2/3">
                 <h2 className="text-3xl font-bold mb-3">
                   {media.title || media.name}
@@ -107,7 +113,6 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                   {media.overview || 'No description available.'}
                 </p>
 
-                {/* Action Buttons */}
                 <div className="flex flex-wrap gap-4 pt-4 border-t border-gray-800">
                   {type === 'movie' ? (
                     <a
