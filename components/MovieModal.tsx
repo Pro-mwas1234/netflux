@@ -41,10 +41,9 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#1f1e1d] rounded-xl border border-gray-800"
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#1f1e1d] rounded-xl border border-gray-800 modal-scrollbar"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-4 right-4 z-10 text-white text-2xl hover:text-gray-300"
@@ -57,7 +56,6 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
         ) : media ? (
           <div className="p-6">
             <div className="flex flex-col md:flex-row gap-6">
-              {/* Poster */}
               <div className="md:w-1/3 flex-shrink-0">
                 <img
                   src={
@@ -70,7 +68,6 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                 />
               </div>
 
-              {/* Details */}
               <div className="md:w-2/3">
                 <h2 className="text-3xl font-bold mb-2">
                   {media.title || media.name}
@@ -88,7 +85,6 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                   {media.overview}
                 </p>
 
-                {/* Action Buttons */}
                 <div className="flex flex-wrap gap-4">
                   {type === 'movie' ? (
                     <a
