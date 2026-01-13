@@ -1,3 +1,4 @@
+// components/MovieCard.tsx
 import Link from 'next/link';
 
 export default function MovieCard({ movie }: { movie: any }) {
