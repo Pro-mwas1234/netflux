@@ -1,3 +1,4 @@
+// components/Header.tsx
 export default function Header() {
   return (
     <header className="bg-black p-6 border-b border-gray-800">
