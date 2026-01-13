@@ -3,12 +3,11 @@
 
 /* Hide scrollbars globally */
 .hide-scrollbar {
-  -ms-overflow-style: none; /* IE/Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-
 .hide-scrollbar::-webkit-scrollbar {
-  display: none; /* Chrome/Safari */
+  display: none;
 }
 
 * {
@@ -24,7 +23,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Ensure interactivity */
 a, button, .clickable {
   cursor: pointer;
   pointer-events: auto !important;
@@ -50,14 +48,7 @@ a, button, .clickable {
   color: #e50914;
 }
 
-.user-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #555;
-}
-
-/* Hero Banner */
+/* Hero */
 .hero {
   height: 80vh;
   position: relative;
@@ -93,7 +84,7 @@ a, button, .clickable {
   font-weight: 600;
 }
 
-/* Movie Section */
+/* Sections */
 .movie-section {
   margin-top: 2rem;
   padding: 0 2rem;
@@ -107,47 +98,24 @@ a, button, .clickable {
   color: white;
 }
 
-/* Responsive Movie Grid */
+/* Responsive Grid */
 .movie-grid {
   display: grid;
   gap: 1.2rem;
   padding: 0.5rem;
 }
 
-/* Mobile: 3 columns */
-@media (min-width: 480px) {
-  .movie-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+@media (min-width: 480px) { .movie-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px) { .movie-grid { grid-template-columns: repeat(5, 1fr); } }
+@media (min-width: 1024px) { .movie-grid { grid-template-columns: repeat(7, 1fr); } }
+@media (min-width: 1400px) { .movie-grid { grid-template-columns: repeat(8, 1fr); } }
 
-/* Tablet: 5 columns */
-@media (min-width: 768px) {
-  .movie-grid {
-    grid-template-columns: repeat(5, 1fr);
-  }
-}
-
-/* Desktop: 7 columns */
-@media (min-width: 1024px) {
-  .movie-grid {
-    grid-template-columns: repeat(7, 1fr);
-  }
-}
-
-/* Large Desktop: 8 columns */
-@media (min-width: 1400px) {
-  .movie-grid {
-    grid-template-columns: repeat(8, 1fr);
-  }
-}
-
-/* Movie Card */
 .movie-card {
   display: block;
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.2s;
+  cursor: pointer;
 }
 
 .movie-card:hover {
@@ -159,6 +127,19 @@ a, button, .clickable {
   display: block;
   aspect-ratio: 2/3;
   object-fit: cover;
+}
+
+/* TV Badge */
+.tv-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #e50914;
+  color: white;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
 }
 
 /* Movie Detail */
@@ -179,38 +160,6 @@ input[type="text"] {
   min-height: 38px;
 }
 
-/* Focus enhancement */
 input:focus {
   box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.3);
-}
-
-/* Animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.2s ease-out;
-}
-/* TV Badge */
-.tv-badge {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: #e50914;
-  color: white;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-/* Modal Scrollbar */
-.modal-scrollbar::-webkit-scrollbar {
-  width: 8px;
-}
-.modal-scrollbar::-webkit-scrollbar-thumb {
-  background: #444;
-  border-radius: 4px;
 }
