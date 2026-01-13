@@ -1,14 +1,19 @@
-// components/Header.tsx
 export default function Header() {
   return (
-    <div className="flex items-center justify-between">
-      <h1 className="text-red-600 text-4xl font-bold">NETFLUX</h1>
-      <div className="flex space-x-4">
-        <span>Home</span>
-        <span className="text-gray-400">Series</span>
-        <span className="text-gray-400">Films</span>
-        <span className="text-gray-400">New & Popular</span>
+    <header className="fixed top-0 w-full z-50 bg-black bg-opacity-80 backdrop-blur-sm">
+      <div className="flex items-center justify-between px-8 py-4">
+        <h1 className="text-netflix-red text-3xl font-bold">NETFLIX</h1>
+        <nav className="hidden md:flex space-x-6">
+          <span className="font-semibold">Home</span>
+          <span className="text-gray-400">TV Shows</span>
+          <span className="text-gray-400">Movies</span>
+          <span className="text-gray-400">New & Popular</span>
+        </nav>
+        <div className="flex items-center space-x-4">
+          <button className="text-gray-300 hover:text-white">🔍</button>
+          <div className="w-8 h-8 rounded bg-gray-600"></div>
+        </div>
       </div>
-    </div>
+    </header>
   );
 }
