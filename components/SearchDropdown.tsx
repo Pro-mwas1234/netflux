@@ -11,6 +11,7 @@ export default function SearchDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Fetch results
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -33,6 +34,7 @@ export default function SearchDropdown() {
     return () => clearTimeout(handler);
   }, [query]);
 
+  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -47,19 +49,21 @@ export default function SearchDropdown() {
     <div className="relative" ref={containerRef}>
       {/* Search Input */}
       <div className="relative">
-        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <MagnifyingGlassIcon className="w-4 h-4 text-gray-400" />
+        </div>
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => query.trim() && setIsOpen(true)}
           placeholder="Search movies..."
-          className="w-full md:w-64 bg-black/30 border border-gray-700 rounded-full py-2 pl-10 pr-10 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+          className="block w-full md:w-64 pl-10 pr-10 py-2 bg-black/30 border border-gray-700 rounded-full text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
         />
         {query && (
           <button
             onClick={() => setQuery('')}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white"
           >
             <XMarkIcon className="w-4 h-4" />
           </button>
@@ -68,21 +72,10 @@ export default function SearchDropdown() {
 
       {/* Results Dropdown */}
       {isOpen && (
-        <div 
-          className="absolute top-full mt-2 w-full bg-[#141414] border border-gray-800 rounded-xl shadow-xl z-50 max-h-80"
-          style={{ minWidth: '300px' }}
-        >
+        <div className="absolute top-full mt-2 w-full md:w-64 bg-[#141414] border border-gray-800 rounded-xl shadow-2xl z-50 max-h-80 overflow-hidden">
           {results.length > 0 ? (
-            <div className="p-3">
-              {/* Horizontal Scroll Container */}
-              <div 
-                className="flex space-x-3 overflow-x-auto pb-2"
-                style={{ 
-                  scrollbarWidth: 'none', 
-                  msOverflowStyle: 'none',
-                  WebkitOverflowScrolling: 'touch'
-                }}
-              >
+            <div className="p-2">
+              <div className="flex space-x-2 overflow-x-auto pb-2 hide-scrollbar">
                 {results.map((movie) => (
                   <Link
                     key={movie.id}
@@ -99,8 +92,6 @@ export default function SearchDropdown() {
                           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                           alt={movie.title}
                           className="w-full h-full object-cover"
-                          width={128}
-                          height={192}
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-gray-900">
@@ -108,7 +99,7 @@ export default function SearchDropdown() {
                         </div>
                       )}
                     </div>
-                    <h3 className="mt-2 text-xs text-white line-clamp-2">
+                    <h3 className="mt-2 text-xs text-white line-clamp-2 px-1">
                       {movie.title}
                     </h3>
                   </Link>
@@ -116,7 +107,7 @@ export default function SearchDropdown() {
               </div>
             </div>
           ) : (
-            <div className="p-6 text-center text-gray-400 text-sm">
+            <div className="p-4 text-center text-gray-400 text-sm">
               No movies found
             </div>
           )}
