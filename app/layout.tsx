@@ -1,7 +1,8 @@
+// app/layout.tsx
 import './globals.css';
 import type { Metadata } from 'next';
 
-export const meta Metadata = {
+export const metadata: Metadata = {
   title: 'Netflux',
   description: 'Stream movies like Netflix',
 };
