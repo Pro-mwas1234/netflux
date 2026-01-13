@@ -3,7 +3,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/20/solid';
 
 export default function SearchDropdown() {
   const [query, setQuery] = useState('');
@@ -46,68 +45,159 @@ export default function SearchDropdown() {
   }, []);
 
   return (
-    <div className="relative" ref={containerRef}>
+    <div ref={containerRef} style={{ position: 'relative', width: '100%', maxWidth: '256px' }}>
       {/* Search Input */}
-      <div className="relative">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <MagnifyingGlassIcon className="w-4 h-4 text-gray-400" />
-        </div>
+      <div style={{ position: 'relative' }}>
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => query.trim() && setIsOpen(true)}
           placeholder="Search movies..."
-          className="block w-full md:w-64 pl-10 pr-10 py-2 bg-black/30 border border-gray-700 rounded-full text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+          style={{
+            width: '100%',
+            padding: '8px 32px 8px 32px',
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            border: '1px solid #444',
+            borderRadius: '9999px',
+            color: 'white',
+            fontSize: '14px',
+            outline: 'none',
+            WebkitBackdropFilter: 'blur(10px)',
+            backdropFilter: 'blur(10px)',
+          }}
         />
+        <div style={{
+          position: 'absolute',
+          left: '12px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          color: '#888',
+          fontSize: '14px'
+        }}>
+          🔍
+        </div>
         {query && (
           <button
             onClick={() => setQuery('')}
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white"
+            style={{
+              position: 'absolute',
+              right: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              background: 'none',
+              border: 'none',
+              color: '#888',
+              fontSize: '16px',
+              cursor: 'pointer'
+            }}
           >
-            <XMarkIcon className="w-4 h-4" />
+            ✕
           </button>
         )}
       </div>
 
       {/* Results Dropdown */}
       {isOpen && (
-        <div className="absolute top-full mt-2 w-full md:w-64 bg-[#141414] border border-gray-800 rounded-xl shadow-2xl z-50 max-h-80 overflow-hidden">
+        <div style={{
+          position: 'absolute',
+          top: '100%',
+          left: 0,
+          right: 0,
+          marginTop: '8px',
+          backgroundColor: '#141414',
+          border: '1px solid #333',
+          borderRadius: '12px',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
+          zIndex: 100,
+          maxHeight: '320px',
+          overflow: 'hidden'
+        }}>
           {results.length > 0 ? (
-            <div className="p-2">
-              <div className="flex space-x-2 overflow-x-auto pb-2 hide-scrollbar">
+            <div style={{ padding: '8px' }}>
+              <div style={{
+                display: 'flex',
+                gap: '8px',
+                overflowX: 'auto',
+                paddingBottom: '8px',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch'
+              }}>
                 {results.map((movie) => (
                   <Link
                     key={movie.id}
                     href={`/movie/${movie.id}`}
-                    className="flex-shrink-0 w-32"
                     onClick={() => {
                       setQuery('');
                       setIsOpen(false);
                     }}
+                    style={{
+                      flexShrink: 0,
+                      width: '120px'
+                    }}
                   >
-                    <div className="aspect-[2/3] bg-gray-800 rounded-md overflow-hidden">
+                    <div style={{
+                      paddingBottom: '150%',
+                      position: 'relative',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      border: '1px solid #333'
+                    }}>
                       {movie.poster_path ? (
                         <img
                           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                           alt={movie.title}
-                          className="w-full h-full object-cover"
+                          style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                          }}
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gray-900">
-                          <span className="text-gray-600 text-xs">No Poster</span>
+                        <div style={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          width: '100%',
+                          height: '100%',
+                          backgroundColor: '#222',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: '#555'
+                        }}>
+                          No Poster
                         </div>
                       )}
                     </div>
-                    <h3 className="mt-2 text-xs text-white line-clamp-2 px-1">
+                    <div style={{
+                      marginTop: '6px',
+                      fontSize: '12px',
+                      color: 'white',
+                      lineHeight: '1.3',
+                      height: '36px',
+                      overflow: 'hidden',
+                      display: '-webkit-box',
+                      WebkitLineClamp: 2,
+                      WebkitBoxOrient: 'vertical'
+                    }}>
                       {movie.title}
-                    </h3>
+                    </div>
                   </Link>
                 ))}
               </div>
             </div>
           ) : (
-            <div className="p-4 text-center text-gray-400 text-sm">
+            <div style={{
+              padding: '16px',
+              textAlign: 'center',
+              color: '#888',
+              fontSize: '14px'
+            }}>
               No movies found
             </div>
           )}
