@@ -1,4 +1,3 @@
-// app/page.tsx
 import Header from '@/components/Header';
 import MovieCard from '@/components/MovieCard';
 import { fetchTrendingMovies } from '@/lib/tmdb';
@@ -10,36 +9,25 @@ export default async function HomePage() {
 
   return (
     <div>
-      {/* Hero Banner */}
       {hero && (
-        <div className="barners">
+        <div className="hero">
           <img
             src={`https://image.tmdb.org/t/p/original${hero.backdrop_path}`}
             alt={hero.title}
-            className="barner-image"
           />
-          <div className="movie-details">
-            <div>
-              <h1 className="movie-name">{hero.title}</h1>
-              <p className="movie-description">{hero.overview}</p>
-              <div className="action-btns">
-                <button id="watch">▶️ Play</button>
-                <button className="Morein">ℹ️ More Info</button>
-              </div>
-            </div>
+          <div className="hero-content">
+            <h1>{hero.title}</h1>
+            <button className="play-btn">▶️ Play</button>
           </div>
         </div>
       )}
 
-      {/* Main Content */}
-      <main>
-        <Header />
-        <section className="list">
-          {movies.map((movie: any) => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </section>
-      </main>
+      <Header />
+      <div className="movie-grid">
+        {movies.slice(1, 13).map((movie: any) => (
+          <MovieCard key={movie.id} movie={movie} />
+        ))}
+      </div>
     </div>
   );
 }
