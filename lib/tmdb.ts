@@ -1,11 +1,7 @@
-// lib/tmdb.ts
 const API_KEY = process.env.TMDB_API_KEY;
-const BASE_URL = 'https://api.themoviedb.org/3';
-
 if (!API_KEY) {
   throw new Error('TMDB_API_KEY is missing in .env.local');
 }
-
 // ✅ This must be present and exported
 export async function fetchTrendingMovies() {
   const res = await fetch(
