@@ -1,12 +1,37 @@
-import { fetchMovieById } from '@/lib/tmdb';
+'use client';
+
+import { useState, useEffect } from 'react';
+import TrailerModal from '@/components/TrailerModal';
 import Image from 'next/image';
 import Link from 'next/link';
+import { fetchMovieById } from '@/lib/tmdb';
 
-export default async function MoviePage({ params }: { params: { id: string } }) {
-  const movie = await fetchMovieById(params.id);
+export default function MoviePage({ params }: { params: { id: string } }) {
+  const [movie, setMovie] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
+
+  useEffect(() => {
+    const loadMovie = async () => {
+      try {
+        const data = await fetchMovieById(params.id);
+        setMovie(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadMovie();
+  }, [params.id]);
+
+  if (loading) return <div className="text-center mt-20">Loading...</div>;
+  if (!movie) return <div className="text-center mt-20">Movie not found</div>;
+
   const backdrop = movie.backdrop_path
     ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
     : 'https://via.placeholder.com/1280x720?text=No+Backdrop';
+
   const trailer = movie.videos?.results?.find(
     (v: any) => v.type === 'Trailer' && v.site === 'YouTube'
   );
@@ -38,19 +63,26 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
               {movie.release_date} • {movie.runtime} min
             </p>
             <p className="mt-4 text-lg">{movie.overview}</p>
+            
             {trailer && (
-              <a
-                href={`https://www.youtube.com/watch?v=${trailer.key}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block bg-netflix-red hover:bg-red-700 px-6 py-2 rounded font-medium mt-4"
+              <button
+                onClick={() => setIsTrailerOpen(true)}
+                className="mt-4 inline-flex items-center bg-netflix-red hover:bg-red-700 px-6 py-2 rounded font-medium"
               >
                 ▶️ Watch Trailer
-              </a>
+              </button>
             )}
           </div>
         </div>
       </div>
+
+      {trailer && (
+        <TrailerModal
+          isOpen={isTrailerOpen}
+          onClose={() => setIsTrailerOpen(false)}
+          videoId={trailer.key}
+        />
+      )}
 
       <div className="container mx-auto px-6 mt-12">
         <Link href="/" className="text-netflix-red hover:underline">&larr; Back to Home</Link>
