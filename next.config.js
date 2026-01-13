@@ -1,6 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  // No "output" → enables SSR on Render
-};
+const nextConfig = {};
 
 module.exports = nextConfig;
