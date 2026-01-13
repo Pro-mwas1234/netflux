@@ -1,92 +1,16 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import TrailerModal from '@/components/TrailerModal';
-import Image from 'next/image';
+// app/movie/[id]/page.tsx
 import Link from 'next/link';
 import { fetchMovieById } from '@/lib/tmdb';
 
-export default function MoviePage({ params }: { params: { id: string } }) {
-  const [movie, setMovie] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [isTrailerOpen, setIsTrailerOpen] = useState(false);
-
-  useEffect(() => {
-    const loadMovie = async () => {
-      try {
-        const data = await fetchMovieById(params.id);
-        setMovie(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadMovie();
-  }, [params.id]);
-
-  if (loading) return <div className="text-center mt-20">Loading...</div>;
-  if (!movie) return <div className="text-center mt-20">Movie not found</div>;
-
-  const backdrop = movie.backdrop_path
-    ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
-    : 'https://via.placeholder.com/1280x720?text=No+Backdrop';
-
-  const trailer = movie.videos?.results?.find(
-    (v: any) => v.type === 'Trailer' && v.site === 'YouTube'
-  );
+export default async function MoviePage({ params }: { params: { id: string } }) {
+  const movie = await fetchMovieById(params.id);
 
   return (
-    <div className="min-h-screen bg-netflix-black">
-      <div className="relative h-96 md:h-[500px]">
-        <Image
-          src={backdrop}
-          alt={movie.title}
-          fill
-          className="object-cover brightness-50"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black" />
-      </div>
-
-      <div className="container mx-auto px-6 -mt-24 relative z-10">
-        <div className="flex flex-col md:flex-row gap-8">
-          <img
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-            width={300}
-            height={450}
-            className="rounded-lg shadow-2xl"
-          />
-          <div className="text-white">
-            <h1 className="text-4xl font-bold">{movie.title}</h1>
-            <p className="text-gray-300 mt-2">
-              {movie.release_date} • {movie.runtime} min
-            </p>
-            <p className="mt-4 text-lg">{movie.overview}</p>
-            
-            {trailer && (
-              <button
-                onClick={() => setIsTrailerOpen(true)}
-                className="mt-4 inline-flex items-center bg-netflix-red hover:bg-red-700 px-6 py-2 rounded font-medium"
-              >
-                ▶️ Watch Trailer
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {trailer && (
-        <TrailerModal
-          isOpen={isTrailerOpen}
-          onClose={() => setIsTrailerOpen(false)}
-          videoId={trailer.key}
-        />
-      )}
-
-      <div className="container mx-auto px-6 mt-12">
-        <Link href="/" className="text-netflix-red hover:underline">&larr; Back to Home</Link>
-      </div>
+    <div className="movie-detail">
+      <Link href="/" className="back-link">&larr; Back to Home</Link>
+      <h1>{movie.title}</h1>
+      <p>{movie.overview}</p>
+      <p>Released: {movie.release_date}</p>
     </div>
   );
 }
