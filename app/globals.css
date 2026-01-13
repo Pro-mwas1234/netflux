@@ -13,12 +13,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Ensure all interactive elements work */
-a, button, .clickable {
-  cursor: pointer;
-  pointer-events: auto !important;
-}
-
 /* Header */
 .topbar {
   display: flex;
@@ -37,13 +31,6 @@ a, button, .clickable {
   font-size: 2rem;
   font-weight: 700;
   color: #e50914;
-}
-
-.user-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #555;
 }
 
 /* Hero */
@@ -118,4 +105,12 @@ a, button, .clickable {
   color: #e50914;
   margin-bottom: 1rem;
   display: inline-block;
+}
+
+/* Test Player */
+.test-player {
+  border: 2px dashed #ff6b6b;
+  padding: 1rem;
+  margin-top: 1rem;
+  background: rgba(0, 0, 0, 0.3);
 }
