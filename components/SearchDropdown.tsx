@@ -10,7 +10,6 @@ export default function SearchDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Fetch results
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -33,7 +32,6 @@ export default function SearchDropdown() {
     return () => clearTimeout(handler);
   }, [query]);
 
-  // Close on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -46,7 +44,6 @@ export default function SearchDropdown() {
 
   return (
     <div ref={containerRef} style={{ position: 'relative', width: '100%', maxWidth: '256px' }}>
-      {/* Search Input */}
       <div style={{ position: 'relative' }}>
         <input
           type="text"
@@ -63,8 +60,6 @@ export default function SearchDropdown() {
             color: 'white',
             fontSize: '14px',
             outline: 'none',
-            WebkitBackdropFilter: 'blur(10px)',
-            backdropFilter: 'blur(10px)',
           }}
         />
         <div style={{
@@ -97,7 +92,6 @@ export default function SearchDropdown() {
         )}
       </div>
 
-      {/* Results Dropdown - WIDER */}
       {isOpen && (
         <div style={{
           position: 'absolute',
@@ -112,7 +106,7 @@ export default function SearchDropdown() {
           zIndex: 100,
           maxHeight: '320px',
           overflow: 'hidden',
-          minWidth: '400px' // ← Wider dropdown
+          minWidth: '400px'
         }}>
           {results.length > 0 ? (
             <div style={{ padding: '12px' }}>
@@ -123,7 +117,6 @@ export default function SearchDropdown() {
                 paddingBottom: '12px',
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
-                WebkitOverflowScrolling: 'touch'
               }}>
                 {results.map((movie) => (
                   <Link
@@ -135,7 +128,7 @@ export default function SearchDropdown() {
                     }}
                     style={{
                       flexShrink: 0,
-                      width: '200px' // ← Wider cards
+                      width: '200px'
                     }}
                   >
                     <div style={{
@@ -158,7 +151,7 @@ export default function SearchDropdown() {
                             objectFit: 'cover'
                           }}
                         />
-                      ) else (
+                      ) : (
                         <div style={{
                           position: 'absolute',
                           top: 0,
