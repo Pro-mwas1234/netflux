@@ -97,7 +97,7 @@ export default function SearchDropdown() {
         )}
       </div>
 
-      {/* Results Dropdown */}
+      {/* Results Dropdown - WIDER */}
       {isOpen && (
         <div style={{
           position: 'absolute',
@@ -111,15 +111,16 @@ export default function SearchDropdown() {
           boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
           zIndex: 100,
           maxHeight: '320px',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          minWidth: '400px' // ← Wider dropdown
         }}>
           {results.length > 0 ? (
-            <div style={{ padding: '8px' }}>
+            <div style={{ padding: '12px' }}>
               <div style={{
                 display: 'flex',
-                gap: '8px',
+                gap: '12px',
                 overflowX: 'auto',
-                paddingBottom: '8px',
+                paddingBottom: '12px',
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch'
@@ -134,7 +135,7 @@ export default function SearchDropdown() {
                     }}
                     style={{
                       flexShrink: 0,
-                      width: '120px'
+                      width: '200px' // ← Wider cards
                     }}
                   >
                     <div style={{
@@ -157,7 +158,7 @@ export default function SearchDropdown() {
                             objectFit: 'cover'
                           }}
                         />
-                      ) : (
+                      ) else (
                         <div style={{
                           position: 'absolute',
                           top: 0,
@@ -175,11 +176,11 @@ export default function SearchDropdown() {
                       )}
                     </div>
                     <div style={{
-                      marginTop: '6px',
-                      fontSize: '12px',
+                      marginTop: '8px',
+                      fontSize: '14px',
                       color: 'white',
-                      lineHeight: '1.3',
-                      height: '36px',
+                      lineHeight: '1.4',
+                      height: '42px',
                       overflow: 'hidden',
                       display: '-webkit-box',
                       WebkitLineClamp: 2,
