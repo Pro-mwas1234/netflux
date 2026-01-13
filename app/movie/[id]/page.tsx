@@ -1,26 +1,49 @@
 // app/movie/[id]/page.tsx
 import Link from 'next/link';
+import { fetchMovieById } from '@/lib/tmdb';
 
 export default async function MoviePage({ params }: { params: { id: string } }) {
-  const { id } = params;
+  const movie = await fetchMovieById(params.id);
 
   return (
     <div className="min-h-screen bg-[#1f1e1d] text-white p-4 md:p-8">
-      <Link href="/" className="text-red-500 mb-6 inline-block">
+      <Link href="/" className="back-link">
         &larr; Back to Home
       </Link>
       
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">Movie ID: {id}</h1>
+        <h1 className="text-3xl font-bold mb-4">{movie.title}</h1>
         
-        <iframe
-          src={`https://moviesapi.to/movie/${id}`}
-          width="100%"
-          height="600"
-          allowFullScreen
-          className="rounded-lg"
-          title="Movie Player"
-        />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-1">
+            <img
+              src={
+                movie.poster_path
+                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                  : 'https://via.placeholder.com/500x750?text=No+Poster'
+              }
+              alt={movie.title}
+              className="rounded-lg w-full"
+            />
+          </div>
+          <div className="md:col-span-3">
+            <p className="text-gray-300 mb-4">{movie.overview}</p>
+            <div className="flex flex-wrap gap-4 mb-6">
+              <span>⭐ {movie.vote_average?.toFixed(1)}</span>
+              <span>📅 {movie.release_date?.substring(0, 4)}</span>
+              <span>🎬 {movie.runtime} min</span>
+            </div>
+            
+            <a
+              href={`https://moviesapi.to/movie/${params.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded flex items-center gap-2"
+            >
+              ▶️ Play Movie
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   );
