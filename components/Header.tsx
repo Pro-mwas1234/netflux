@@ -2,15 +2,8 @@
 export default function Header() {
   return (
     <header className="topbar">
-      <div className="my-logo">NETFLIX</div>
-      <div className="right-stuffs">
-        <div>🔍</div>
-        <img
-          src="/user-placeholder.png"
-          alt="User"
-          className="userimge"
-        />
-      </div>
+      <div className="logo">NETFLUX</div>
+      <img src="/user.png" alt="User" className="user-icon" />
     </header>
   );
 }
