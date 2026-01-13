@@ -1,9 +1,8 @@
-// lib/tmdb.ts
 const API_KEY = process.env.TMDB_API_KEY;
 const BASE_URL = process.env.TMDB_BASE_URL;
 
 if (!API_KEY || !BASE_URL) {
-  throw new Error('TMDB_API_KEY or TMDB_BASE_URL is not set');
+  throw new Error('TMDB environment variables are missing');
 }
 
 export async function fetchTrendingMovies() {
