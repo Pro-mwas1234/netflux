@@ -1,4 +1,15 @@
+/* app/globals.css */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
+
+/* Netflix-style scrollbar hiding */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
 
 * {
   margin: 0;
@@ -11,6 +22,12 @@ body {
   background: #1f1e1d;
   color: white;
   overflow-x: hidden;
+}
+
+/* Ensure all interactive elements work */
+a, button, .clickable {
+  cursor: pointer;
+  pointer-events: auto !important;
 }
 
 /* Header */
@@ -31,6 +48,13 @@ body {
   font-size: 2rem;
   font-weight: 700;
   color: #e50914;
+}
+
+.user-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #555;
 }
 
 /* Hero */
@@ -107,6 +131,11 @@ body {
   display: inline-block;
 }
 
+/* Search Input */
+input[type="text"] {
+  min-height: 38px;
+}
+
 /* Test Player */
 .test-player {
   border: 2px dashed #ff6b6b;
@@ -114,79 +143,8 @@ body {
   margin-top: 1rem;
   background: rgba(0, 0, 0, 0.3);
 }
-/* Add to app/globals.css */
-/* Search input styles */
-.search-input {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50px;
-  padding: 8px 16px;
-  color: white;
-  width: 100%;
-  max-width: 300px;
-}
 
-.search-input::placeholder {
-  color: #aaa;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #e50914;
-  box-shadow: 0 0 0 2px rgba(229, 9, 20, 0.3);
-}
-
-/* Search dropdown */
-.search-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin-top: 8px;
-  background: #1f1e1d;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
-  overflow: hidden;
-  z-index: 100;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-}
-
-.search-result {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.search-result:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.search-poster {
-  width: 48px;
-  height: 72px;
-  border-radius: 4px;
-  object-fit: cover;
-}
-
-.search-title {
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.search-year {
-  font-size: 0.75rem;
-  color: #aaa;
-  margin-top: 2px;
-}
-
-
-/* Add to app/globals.css */
+/* Animation */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -196,17 +154,7 @@ body {
   animation: fadeIn 0.2s ease-out;
 }
 
-/* Input focus enhancement */
+/* Focus enhancement */
 input:focus {
   box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.3);
-}
-/* Hide scrollbar for Chrome/Safari */
-.hide-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for Firefox */
-.hide-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
 }
