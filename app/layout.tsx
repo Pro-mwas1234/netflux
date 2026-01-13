@@ -1,9 +1,9 @@
 import './globals.css';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
+export const meta Metadata = {
   title: 'Netflux',
-  description: 'Stream movies like Netflix',
+  description: 'Movie streaming',
 };
 
 export default function RootLayout({
