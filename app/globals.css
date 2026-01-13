@@ -1,8 +1,39 @@
-/* Hide scrollbar */
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbar but keep functionality */
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
 }
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Netflix-style card hover */
+.movie-card {
+  @apply relative transition-transform duration-300 ease-in-out;
+}
+.movie-card:hover {
+  transform: scale(1.05);
+}
+.movie-card .overlay {
+  @apply absolute inset-0 bg-black bg-opacity-60 opacity-0 transition-opacity duration-300 rounded-lg;
+}
+.movie-card:hover .overlay {
+  opacity: 1;
+}
+.movie-card .play-button {
+  @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 transition-opacity duration-300;
+}
+.movie-card:hover .play-button {
+  opacity: 1;
 }
