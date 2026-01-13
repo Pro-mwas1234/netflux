@@ -158,3 +158,71 @@ input[type="text"] {
 input:focus {
   box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.3);
 }
+/* Add to app/globals.css */
+
+/* Movie Section */
+.movie-section {
+  margin-top: 2rem;
+  padding: 0 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  padding-left: 0.5rem;
+}
+
+/* Responsive Movie Grid */
+.movie-grid {
+  display: grid;
+  gap: 1.2rem;
+  padding: 0.5rem;
+}
+
+/* Mobile: 3 columns */
+@media (min-width: 480px) {
+  .movie-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablet: 5 columns */
+@media (min-width: 768px) {
+  .movie-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+/* Desktop: 7 columns */
+@media (min-width: 1024px) {
+  .movie-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+/* Large Desktop: 8 columns */
+@media (min-width: 1400px) {
+  .movie-grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+/* Movie Card */
+.movie-card {
+  display: block;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+}
+
+.movie-card img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 2/3; /* Maintain poster ratio */
+  object-fit: cover;
+}
