@@ -1,20 +1,25 @@
 // app/movie/[id]/page.tsx
 import { fetchMovieById } from '@/lib/tmdb';
-import { fetchTrendingMovies } from '@/lib/tmdb'; // 👈 Add this import
+import { fetchTrendingMovies } from '@/lib/tmdb';
 import Image from 'next/image';
 import Link from 'next/link';
 
-// 👇 NEW: Tell Next.js which [id] pages to pre-render
+// 👇 Define a minimal type for movie objects
+interface Movie {
+  id: number;
+  // Add other fields if needed, but id is all we use here
+}
+
 export async function generateStaticParams() {
   const data = await fetchTrendingMovies();
-  const movies = data.results || [];
-  
-  // Generate static pages for top 10 trending movies
-  return movies.slice(0, 10).map(movie => ({
-    id: movie.id.toString(),
+  const movies: Movie[] = data.results || []; // 👈 Explicitly type the array
+
+  return movies.slice(0, 10).map((movie) => ({
+    id: movie.id.toString(), // Next.js expects string params
   }));
 }
 
+// ... rest of your component (unchanged)
 export default async function MoviePage({ params }: { params: { id: string } }) {
   const movie = await fetchMovieById(params.id);
   const backdrop = movie.backdrop_path
