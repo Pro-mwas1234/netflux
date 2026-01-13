@@ -1,7 +1,7 @@
 /* app/globals.css */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap");
 
-/* Netflix-style scrollbar hiding */
+/* Hide scrollbars globally */
 .hide-scrollbar {
   -ms-overflow-style: none; /* IE/Edge */
   scrollbar-width: none; /* Firefox */
@@ -24,7 +24,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Ensure all interactive elements work */
+/* Ensure interactivity */
 a, button, .clickable {
   cursor: pointer;
   pointer-events: auto !important;
@@ -57,7 +57,7 @@ a, button, .clickable {
   background: #555;
 }
 
-/* Hero */
+/* Hero Banner */
 .hero {
   height: 80vh;
   position: relative;
@@ -93,73 +93,6 @@ a, button, .clickable {
   font-weight: 600;
 }
 
-/* Movie Grid */
-.movie-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-  margin-top: 2rem;
-}
-
-.movie-card {
-  display: block;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.2s;
-}
-
-.movie-card:hover {
-  transform: scale(1.05);
-}
-
-.movie-card img {
-  width: 100%;
-  display: block;
-}
-
-/* Movie Detail */
-.movie-detail {
-  padding: 2rem;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.back-link {
-  color: #e50914;
-  margin-bottom: 1rem;
-  display: inline-block;
-}
-
-/* Search Input */
-input[type="text"] {
-  min-height: 38px;
-}
-
-/* Test Player */
-.test-player {
-  border: 2px dashed #ff6b6b;
-  padding: 1rem;
-  margin-top: 1rem;
-  background: rgba(0, 0, 0, 0.3);
-}
-
-/* Animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.animate-fadeIn {
-  animation: fadeIn 0.2s ease-out;
-}
-
-/* Focus enhancement */
-input:focus {
-  box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.3);
-}
-/* Add to app/globals.css */
-
 /* Movie Section */
 .movie-section {
   margin-top: 2rem;
@@ -171,6 +104,7 @@ input:focus {
   font-weight: 600;
   margin-bottom: 1.5rem;
   padding-left: 0.5rem;
+  color: white;
 }
 
 /* Responsive Movie Grid */
@@ -223,6 +157,39 @@ input:focus {
 .movie-card img {
   width: 100%;
   display: block;
-  aspect-ratio: 2/3; /* Maintain poster ratio */
+  aspect-ratio: 2/3;
   object-fit: cover;
+}
+
+/* Movie Detail */
+.movie-detail {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.back-link {
+  color: #e50914;
+  margin-bottom: 1rem;
+  display: inline-block;
+}
+
+/* Search Input */
+input[type="text"] {
+  min-height: 38px;
+}
+
+/* Focus enhancement */
+input:focus {
+  box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.3);
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
 }
