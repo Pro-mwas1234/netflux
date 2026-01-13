@@ -41,7 +41,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#1f1e1d] rounded-xl border border-gray-800 modal-scrollbar"
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#1f1e1d] rounded-xl border border-gray-800"
         onClick={(e) => e.stopPropagation()}
       >
         <button
