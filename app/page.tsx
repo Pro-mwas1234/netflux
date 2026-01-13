@@ -1,5 +1,5 @@
 // app/page.tsx
-'use client'; // ← Add this at top
+
 
 import { useState } from 'react';
 import Header from '@/components/Header';
