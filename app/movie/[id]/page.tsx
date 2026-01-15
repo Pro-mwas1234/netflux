@@ -39,7 +39,7 @@ export default async function MoviePage({ params }: { params: { id: string } }) 
             </div>
             
             <a
-              href={`https://moviesapi.to/movie/${params.id}`}
+              href={`https://www.vidking.net/embed/movie/${params.id}`}
               target="_blank"
               rel="noopener noreferrer"
               className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded flex items-center gap-2"
