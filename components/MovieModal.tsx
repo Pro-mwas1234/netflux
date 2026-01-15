@@ -119,12 +119,12 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                 <div className="pt-3 border-t border-gray-800">
                   {type === 'movie' ? (
                     <a
-                      href={`https://moviesapi.to/movie/${mediaId}`}
+                      href={`https://www.vidking.net/embed/movie/${mediaId}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg flex items-center gap-1.5 transition-colors"
                     >
-                      ▶️ Play
+                      ▶️ Play Movie
                     </a>
                   ) : type === 'tv' && media.number_of_seasons ? (
                     <div className="flex flex-col sm:flex-row gap-2">
@@ -140,7 +140,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                         ))}
                       </select>
                       <a
-                        href={`https://moviesapi.to/tv/${mediaId}/season/${selectedSeason}`}
+                        href={`https://www.vidking.net/embed/tv/${mediaId}/season/${selectedSeason}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
