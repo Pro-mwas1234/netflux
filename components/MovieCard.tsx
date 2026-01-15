@@ -1,17 +1,49 @@
 // components/MovieCard.tsx
-'use client'; // ← Only this file needs 'use client'
+'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import MovieModal from './MovieModal';
+
+let globalModalOpen = false; // Track if any modal is open
 
 export default function MovieCard({ movie, type = "movie" }: { movie: any; type?: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Close when another modal opens
+  useEffect(() => {
+    const handleGlobalModalOpen = () => {
+      if (isModalOpen) setIsModalOpen(false);
+    };
+
+    if (isModalOpen) {
+      globalModalOpen = true;
+      window.addEventListener('global-modal-open', handleGlobalModalOpen);
+    }
+
+    return () => {
+      window.removeEventListener('global-modal-open', handleGlobalModalOpen);
+    };
+  }, [isModalOpen]);
+
+  const openModal = () => {
+    if (globalModalOpen) {
+      // Notify other cards to close
+      window.dispatchEvent(new Event('global-modal-open'));
+    }
+    globalModalOpen = true;
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    globalModalOpen = false;
+    setIsModalOpen(false);
+  };
 
   return (
     <>
       <div 
         className="movie-card"
-        onClick={() => setIsModalOpen(true)}
+        onClick={openModal}
       >
         <img
           src={
@@ -28,7 +60,7 @@ export default function MovieCard({ movie, type = "movie" }: { movie: any; type?
 
       <MovieModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
         mediaId={movie.id.toString()}
         type={type as 'movie' | 'tv'}
       />
