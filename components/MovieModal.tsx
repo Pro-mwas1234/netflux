@@ -76,7 +76,6 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
         ) : media ? (
           <div className="p-5">
             <div className="flex flex-col md:flex-row gap-5">
-              {/* Poster - Smaller */}
               <div className="md:w-1/3 flex-shrink-0">
                 <img
                   src={
@@ -89,7 +88,6 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                 />
               </div>
 
-              {/* Details - Compact */}
               <div className="md:w-2/3">
                 <h2 className="text-xl font-bold mb-2 text-white line-clamp-2">
                   {media.title || media.name}
