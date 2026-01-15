@@ -59,11 +59,11 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-20 bg-black bg-opacity-90 backdrop-blur-sm"
       onClick={onClose}
     >
       <div 
-        className="relative w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-gray-900 rounded-xl border border-gray-800 shadow-2xl"
+        className="relative w-full max-w-3xl max-h-[80vh] overflow-y-auto bg-gray-900 rounded-xl border border-gray-800 shadow-2xl hide-scrollbar"
         onClick={(e) => e.stopPropagation()}
       >
         {loading ? (
@@ -89,7 +89,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
               </div>
 
               <div className="md:w-2/3">
-                <h2 className="text-xl font-bold mb-2 text-white line-clamp-2">
+                <h2 className="text-xl font-bold mb-2 text-white">
                   {media.title || media.name}
                 </h2>
                 
@@ -112,9 +112,9 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                   )}
                 </div>
 
-                <p className="text-gray-400 text-sm mb-4 line-clamp-3">
+                <div className="text-gray-400 text-sm mb-4 max-h-32 overflow-y-auto hide-scrollbar">
                   {media.overview || 'No description available.'}
-                </p>
+                </div>
 
                 <div className="pt-3 border-t border-gray-800">
                   {type === 'movie' ? (
