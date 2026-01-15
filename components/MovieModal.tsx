@@ -15,10 +15,8 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
   const [loading, setLoading] = useState(true);
   const [selectedSeason, setSelectedSeason] = useState<number>(1);
 
-  // ✅ Always call hooks at top level (fixes React #310)
   useEffect(() => {
     if (!isOpen) {
-      // Reset state when closed
       setMedia(null);
       setLoading(true);
       return;
@@ -43,43 +41,40 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
     loadMedia();
   }, [isOpen, mediaId, type]);
 
-  // Prevent background scroll
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') onClose();
+      };
+      window.addEventListener('keydown', handleEscape);
+      return () => {
+        window.removeEventListener('keydown', handleEscape);
+        document.body.style.overflow = 'unset';
+      };
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
+  }, [isOpen, onClose]);
 
-  // ✅ Conditionally render JSX (not hooks)
   if (!isOpen) return null;
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-80"
-      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90 backdrop-blur-sm"
+      onClick={onClose} // Close on outside click
     >
       <div 
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#1f1e1d] rounded-xl border border-gray-800"
-        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-gray-900 rounded-xl border border-gray-700 shadow-2xl"
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 text-white text-2xl hover:text-gray-300"
-        >
-          &times;
-        </button>
-
         {loading ? (
-          <div className="p-12 text-center text-gray-400">Loading details...</div>
+          <div className="p-12 text-center text-gray-400">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-600 mb-4"></div>
+            <p>Loading details...</p>
+          </div>
         ) : media?.error ? (
           <div className="p-12 text-center text-red-400">Failed to load media</div>
         ) : media ? (
-          <div className="p-6">
+          <div className="p-6 md:p-8">
             <div className="flex flex-col md:flex-row gap-8">
               <div className="md:w-1/3 flex-shrink-0">
                 <img
@@ -89,23 +84,31 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                       : 'https://via.placeholder.com/500x750?text=No+Poster'
                   }
                   alt={media.title || media.name}
-                  className="w-full rounded-lg shadow-2xl"
+                  className="w-full rounded-lg shadow-xl"
                 />
               </div>
 
               <div className="md:w-2/3">
-                <h2 className="text-3xl font-bold mb-3">
+                <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
                   {media.title || media.name}
                 </h2>
                 
                 <div className="flex flex-wrap gap-4 mb-5 text-gray-300">
-                  <span>⭐ {media.vote_average?.toFixed(1)}/10</span>
-                  <span>📅 {media.release_date?.substring(0, 4) || media.first_air_date?.substring(0, 4)}</span>
+                  <span className="bg-gray-800 px-3 py-1 rounded-full text-sm">
+                    ⭐ {media.vote_average?.toFixed(1)}/10
+                  </span>
+                  <span className="bg-gray-800 px-3 py-1 rounded-full text-sm">
+                    📅 {media.release_date?.substring(0, 4) || media.first_air_date?.substring(0, 4)}
+                  </span>
                   {type === 'tv' && media.number_of_seasons && (
-                    <span>📺 {media.number_of_seasons} Season{media.number_of_seasons > 1 ? 's' : ''}</span>
+                    <span className="bg-gray-800 px-3 py-1 rounded-full text-sm">
+                      📺 {media.number_of_seasons} Season{media.number_of_seasons > 1 ? 's' : ''}
+                    </span>
                   )}
                   {type === 'movie' && media.runtime && (
-                    <span>🎬 {media.runtime} min</span>
+                    <span className="bg-gray-800 px-3 py-1 rounded-full text-sm">
+                      🎬 {media.runtime} min
+                    </span>
                   )}
                 </div>
 
@@ -119,7 +122,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                       href={`https://moviesapi.to/movie/${mediaId}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded flex items-center gap-2 transition-colors"
+                      className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg flex items-center gap-2 transition-colors shadow-lg hover:shadow-red-900/30"
                     >
                       ▶️ Play Movie
                     </a>
@@ -128,7 +131,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                       <select
                         value={selectedSeason}
                         onChange={(e) => setSelectedSeason(Number(e.target.value))}
-                        className="bg-gray-800 text-white px-4 py-2.5 rounded border border-gray-700 min-w-[140px]"
+                        className="bg-gray-800 text-white px-4 py-3 rounded-lg border border-gray-700 min-w-[140px] focus:ring-2 focus:ring-red-500"
                       >
                         {Array.from({ length: media.number_of_seasons }).map((_, i) => (
                           <option key={i + 1} value={i + 1}>
@@ -140,7 +143,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                         href={`https://moviesapi.to/tv/${mediaId}/season/${selectedSeason}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded transition-colors"
+                        className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors shadow-lg hover:shadow-red-900/30"
                       >
                         Watch Season {selectedSeason}
                       </a>
