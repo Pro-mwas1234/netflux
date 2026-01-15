@@ -3,8 +3,6 @@ import Header from '@/components/Header';
 import MovieCard from '@/components/MovieCard';
 import { fetchTrendingMovies, fetchTrendingSeries } from '@/lib/tmdb';
 
-// NO 'use client' here!
-
 interface Media {
   id: number;
   title?: string;
@@ -52,7 +50,7 @@ export default async function HomePage() {
             <MovieCard 
               key={movie.id} 
               movie={movie} 
-              type="movie"
+              type="movie" 
             />
           ))}
         </div>
@@ -65,7 +63,7 @@ export default async function HomePage() {
             <MovieCard 
               key={show.id} 
               movie={show} 
-              type="tv"
+              type="tv" 
             />
           ))}
         </div>
