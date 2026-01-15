@@ -44,7 +44,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
   // ✅ Keep overflow: hidden for proper modal behavior
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = '';
       const handleEscape = (e: KeyboardEvent) => {
         if (e.key === 'Escape') onClose();
       };
