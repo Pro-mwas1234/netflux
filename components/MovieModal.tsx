@@ -41,31 +41,26 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
     loadMedia();
   }, [isOpen, mediaId, type]);
 
-  // ✅ Keep overflow: hidden for proper modal behavior
+  // ✅ REMOVED overflow: hidden handling
+  // Background will scroll normally
+
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = '';
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') onClose();
-      };
-      window.addEventListener('keydown', handleEscape);
-      return () => {
-        window.removeEventListener('keydown', handleEscape);
-        document.body.style.overflow = 'unset';
-      };
-    }
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) onClose();
+    };
+    window.addEventListener('keydown', handleEscape);
+    return () => window.removeEventListener('keydown', handleEscape);
   }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-20 bg-black bg-opacity-90 backdrop-blur-sm"
       onClick={onClose}
     >
-      {/* ✅ Full-height scrollable container */}
       <div 
-        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-gray-900 rounded-xl border border-gray-800 shadow-2xl hide-scrollbar"
+        className="relative w-full max-w-3xl bg-gray-900 rounded-xl border border-gray-800 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {loading ? (
@@ -124,9 +119,9 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
           <div className="p-8 text-center text-red-400 text-sm">No data available</div>
         )}
 
-        {/* ✅ STICKY ACTION BAR - Always visible */}
+        {/* ✅ STICKY ACTION BAR */}
         {media && !loading && (
-          <div className="sticky bottom-0 bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 p-4">
+          <div className="border-t border-gray-800 p-4">
             {type === 'movie' ? (
               <a
                 href={`https://www.vidking.net/embed/movie/${mediaId}`}
