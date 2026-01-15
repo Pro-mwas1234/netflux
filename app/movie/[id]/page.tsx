@@ -1,50 +1,82 @@
-// app/movie/[id]/page.tsx
+// app/watch/[id]/page.tsx
+'use client'; // ← Keep this
+
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation'; // ← New import
 import Link from 'next/link';
+import Header from '@/components/Header';
 import { fetchMovieById } from '@/lib/tmdb';
 
-export async function generateStaticParams() {
-  return [];
-}
+export default function WatchPage({ params }: { params: { id: string } }) {
+  const searchParams = useSearchParams(); // ← Get URL params safely
+  const [media, setMedia] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-export default async function MoviePage({ params }: { params: { id: string } }) {
-  const movie = await fetchMovieById(params.id);
+  useEffect(() => {
+    const loadMedia = async () => {
+      try {
+        // ✅ Get params from Next.js hook
+        const type = searchParams.get('type') || 'movie';
+        const season = parseInt(searchParams.get('season') || '1');
+        
+        const data = await fetchMovieById(params.id);
+        setMedia(data);
+      } catch (err) {
+        console.error('Failed to load media', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadMedia();
+  }, [params.id, searchParams]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#1f1e1d]">
+        <Header />
+        <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
+          <div className="text-center text-gray-400">
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-red-600 mb-4"></div>
+            <p>Loading player...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ✅ Construct URL with params
+  const type = searchParams.get('type') || 'movie';
+  const season = searchParams.get('season') || '1';
+  const embedUrl = type === 'tv'
+    ? `https://www.vidking.net/embed/tv/${params.id}/season/${season}`
+    : `https://www.vidking.net/embed/movie/${params.id}`;
 
   return (
-    <div className="min-h-screen bg-[#1f1e1d] text-white p-4 md:p-8">
-      <Link href="/" className="back-link">
-        &larr; Back to Home
-      </Link>
-      
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">{movie.title}</h1>
-        
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-1">
-            <img
-              src={
-                movie.poster_path
-                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                  : 'https://via.placeholder.com/500x750?text=No+Poster'
-              }
-              alt={movie.title}
-              className="rounded-lg w-full"
-            />
-          </div>
-          <div className="md:col-span-3">
-            <p className="text-gray-300 mb-4">{movie.overview}</p>
-            <div className="flex flex-wrap gap-4 mb-6">
-              <span>⭐ {movie.vote_average?.toFixed(1)}</span>
-              <span>📅 {movie.release_date?.substring(0, 4)}</span>
-              <span>🎬 {movie.runtime} min</span>
-            </div>
-            
-            {/* ✅ REDIRECT TO YOUR PLAYER PAGE */}
-            <Link
-              href={`/watch/${params.id}?type=movie`}
-              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded flex items-center gap-2"
+    <div className="min-h-screen bg-[#1f1e1d]">
+      <Header />
+      <div className="p-4 md:p-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex justify-between items-center mb-4">
+            <Link 
+              href="/" 
+              className="text-red-500 hover:text-red-400 flex items-center gap-2"
             >
-              ▶️ Play Movie
+              &larr; Back to Home
             </Link>
+            <h1 className="text-xl font-bold text-white truncate">
+              {media?.title || media?.name}
+              {type === 'tv' && ` - Season ${season}`}
+            </h1>
+          </div>
+          
+          <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl">
+            <iframe
+              src={embedUrl}
+              className="w-full h-full"
+              allowFullScreen
+              allow="autoplay; encrypted-media"
+              title="Video Player"
+            />
           </div>
         </div>
       </div>
