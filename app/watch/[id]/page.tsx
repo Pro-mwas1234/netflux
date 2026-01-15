@@ -5,28 +5,19 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
-import { fetchMovieById } from '@/lib/tmdb';
 
 export default function WatchPage({ params }: { params: { id: string } }) {
   const searchParams = useSearchParams();
   const [media, setMedia] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [playerUrl, setPlayerUrl] = useState('');
 
   useEffect(() => {
     const loadMedia = async () => {
       try {
-        const type = searchParams.get('type') || 'movie';
-        const season = searchParams.get('season') || '1';
-        
-        // Construct VidKing URL
-        const url = type === 'tv'
-          ? `https://www.vidking.net/embed/tv/${params.id}/season/${season}`
-          : `https://www.vidking.net/embed/movie/${params.id}`;
-        
-        setPlayerUrl(url);
-        
-        const data = await fetchMovieById(params.id);
+        // ✅ Use API route (not direct TMDB call)
+        const res = await fetch(`/api/media/${params.id}`);
+        if (!res.ok) throw new Error('Failed to load media');
+        const data = await res.json();
         setMedia(data);
       } catch (err) {
         console.error('Failed to load media', err);
@@ -35,10 +26,16 @@ export default function WatchPage({ params }: { params: { id: string } }) {
       }
     };
     loadMedia();
-  }, [params.id, searchParams]);
+  }, [params.id]);
 
   const openPlayer = () => {
-    window.open(playerUrl, '_blank', 'noopener,noreferrer');
+    const type = searchParams.get('type') || 'movie';
+    const season = searchParams.get('season') || '1';
+    const url = type === 'tv'
+      ? `https://www.vidking.net/embed/tv/${params.id}/season/${season}`
+      : `https://www.vidking.net/embed/movie/${params.id}`;
+    
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   if (loading) {
