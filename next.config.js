@@ -1,7 +1,8 @@
 // next.config.js
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: '.', // ← Add this line
+  // DO NOT use output: 'export' - you need API routes
+  reactStrictMode: true,
 };
 
 module.exports = nextConfig;
