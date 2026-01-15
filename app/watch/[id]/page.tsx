@@ -50,10 +50,15 @@ export default function WatchPage({ params }: { params: { id: string } }) {
   return (
     <div className="min-h-screen bg-black">
       {/* Fixed header */}
-      <Header />
+      <div className="fixed top-0 left-0 right-0 z-50">
+        <Header />
+      </div>
       
-      {/* Full-screen video container */}
-      <div className="fixed inset-0 z-10 bg-black">
+      {/* Full-screen player with header offset */}
+      <div 
+        className="w-full"
+        style={{ height: 'calc(100vh - 80px)', marginTop: '80px' }}
+      >
         <iframe
           src={embedUrl}
           className="w-full h-full"
@@ -64,17 +69,17 @@ export default function WatchPage({ params }: { params: { id: string } }) {
         />
       </div>
 
-      {/* Movie info overlay (bottom left) */}
-      <div className="absolute bottom-4 left-4 z-20 text-white max-w-md">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">
+      {/* Movie info overlay */}
+      <div className="fixed bottom-6 left-6 z-50 text-white max-w-md">
+        <h1 className="text-2xl font-bold mb-2">
           {media?.title || media?.name}
         </h1>
         {type === 'tv' && (
-          <p className="text-lg mb-2">Season {season}</p>
+          <p className="text-lg">Season {season}</p>
         )}
         <Link 
           href="/" 
-          className="text-red-500 hover:text-red-400 flex items-center gap-2 text-lg"
+          className="text-red-500 hover:text-red-400 flex items-center gap-2 mt-3"
         >
           &larr; Back to Home
         </Link>
