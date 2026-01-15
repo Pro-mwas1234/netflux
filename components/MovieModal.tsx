@@ -26,6 +26,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
     setLoading(true);
     const loadMedia = async () => {
       try {
+        // ✅ Use API route (not direct TMDB call)
         const res = await fetch(`/api/media/${mediaId}`);
         if (!res.ok) throw new Error('Failed to load media');
         const data = await res.json();
