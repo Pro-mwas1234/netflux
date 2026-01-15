@@ -41,6 +41,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
     loadMedia();
   }, [isOpen, mediaId, type]);
 
+  // ✅ Keep overflow: hidden for proper modal behavior
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -59,11 +60,12 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-start justify-center p-4 pt-20 bg-black bg-opacity-90 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90 backdrop-blur-sm"
       onClick={onClose}
     >
+      {/* ✅ Full-height scrollable container */}
       <div 
-        className="relative w-full max-w-3xl max-h-[80vh] overflow-y-auto bg-gray-900 rounded-xl border border-gray-800 shadow-2xl hide-scrollbar"
+        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto bg-gray-900 rounded-xl border border-gray-800 shadow-2xl hide-scrollbar"
         onClick={(e) => e.stopPropagation()}
       >
         {loading ? (
@@ -112,7 +114,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                   )}
                 </div>
 
-                <div className="text-gray-400 text-sm mb-4 max-h-32 overflow-y-auto hide-scrollbar">
+                <div className="text-gray-400 text-sm mb-6">
                   {media.overview || 'No description available.'}
                 </div>
               </div>
@@ -122,24 +124,24 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
           <div className="p-8 text-center text-red-400 text-sm">No data available</div>
         )}
 
-        {/* ✅ STICKY ACTION BAR - Always visible at bottom */}
+        {/* ✅ STICKY ACTION BAR - Always visible */}
         {media && !loading && (
-          <div className="sticky bottom-0 bg-gray-900/90 backdrop-blur-sm border-t border-gray-800 p-4">
+          <div className="sticky bottom-0 bg-gray-900/95 backdrop-blur-sm border-t border-gray-800 p-4">
             {type === 'movie' ? (
               <a
                 href={`https://www.vidking.net/embed/movie/${mediaId}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full block text-center px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
+                className="w-full block text-center px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors text-base"
               >
                 ▶️ Play Movie
               </a>
             ) : type === 'tv' && media.number_of_seasons ? (
-              <div className="flex flex-col sm:flex-row gap-2">
+              <div className="flex flex-col sm:flex-row gap-3">
                 <select
                   value={selectedSeason}
                   onChange={(e) => setSelectedSeason(Number(e.target.value))}
-                  className="bg-gray-800 text-white px-3 py-2.5 rounded border border-gray-700 focus:ring-1 focus:ring-red-500"
+                  className="bg-gray-800 text-white px-4 py-3 rounded border border-gray-700 focus:ring-2 focus:ring-red-500 text-base"
                 >
                   {Array.from({ length: media.number_of_seasons }).map((_, i) => (
                     <option key={i + 1} value={i + 1}>
@@ -151,7 +153,7 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                   href={`https://www.vidking.net/embed/tv/${mediaId}/season/${selectedSeason}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto block text-center px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
+                  className="w-full sm:w-auto block text-center px-4 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors text-base"
                 >
                   Watch Season {selectedSeason}
                 </a>
