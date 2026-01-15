@@ -49,40 +49,35 @@ export default function WatchPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="min-h-screen bg-black">
+      {/* Fixed header */}
       <Header />
       
-      {/* Full-width player container */}
-      <div className="w-full max-w-none px-0">
-        <div className="aspect-video w-full bg-black">
-          <iframe
-            src={embedUrl}
-            className="w-full h-full min-h-[500px] md:min-h-[600px] lg:min-h-[720px]"
-            allowFullScreen
-            allow="autoplay; encrypted-media"
-            title="Video Player"
-            sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-          />
-        </div>
+      {/* Full-screen video container */}
+      <div className="fixed inset-0 z-10 bg-black">
+        <iframe
+          src={embedUrl}
+          className="w-full h-full"
+          allowFullScreen
+          allow="autoplay; encrypted-media"
+          title="Video Player"
+          sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+        />
       </div>
 
-      {/* Movie info overlay (optional) */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-white">
-              {media?.title || media?.name}
-            </h1>
-            {type === 'tv' && (
-              <p className="text-gray-400 mt-1">Season {season}</p>
-            )}
-          </div>
-          <Link 
-            href="/" 
-            className="text-red-500 hover:text-red-400 flex items-center gap-2 text-lg"
-          >
-            &larr; Home
-          </Link>
-        </div>
+      {/* Movie info overlay (bottom left) */}
+      <div className="absolute bottom-4 left-4 z-20 text-white max-w-md">
+        <h1 className="text-2xl md:text-3xl font-bold mb-2">
+          {media?.title || media?.name}
+        </h1>
+        {type === 'tv' && (
+          <p className="text-lg mb-2">Season {season}</p>
+        )}
+        <Link 
+          href="/" 
+          className="text-red-500 hover:text-red-400 flex items-center gap-2 text-lg"
+        >
+          &larr; Back to Home
+        </Link>
       </div>
     </div>
   );
