@@ -2,9 +2,9 @@
 import Link from 'next/link';
 import { fetchMovieById } from '@/lib/tmdb';
 
-// ✅ Required for dynamic routes on Vercel
+// ✅ Required for Vercel dynamic routes
 export async function generateStaticParams() {
-  return []; // Allows all paths
+  return []; // Allows all paths like /series/1399
 }
 
 export default async function SeriesPage({ params }: { params: { id: string } }) {
