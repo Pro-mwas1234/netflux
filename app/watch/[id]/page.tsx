@@ -10,7 +10,6 @@ export default function WatchPage({ params }: { params: { id: string } }) {
   const searchParams = useSearchParams();
   const [media, setMedia] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadMedia = async () => {
@@ -20,8 +19,7 @@ export default function WatchPage({ params }: { params: { id: string } }) {
         const data = await res.json();
         setMedia(data);
       } catch (err) {
-        setError('Failed to load media details');
-        console.error(err);
+        console.error('Failed to load media', err);
       } finally {
         setLoading(false);
       }
@@ -43,26 +41,6 @@ export default function WatchPage({ params }: { params: { id: string } }) {
     );
   }
 
-  if (error) {
-    return (
-      <div className="min-h-screen bg-[#1f1e1d]">
-        <Header />
-        <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
-          <div className="text-center text-red-400">
-            <p>{error}</p>
-            <button 
-              onClick={() => window.location.reload()}
-              className="mt-4 px-4 py-2 bg-gray-800 rounded"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Construct embed URL
   const type = searchParams.get('type') || 'movie';
   const season = searchParams.get('season') || '1';
   const embedUrl = type === 'tv'
@@ -87,7 +65,7 @@ export default function WatchPage({ params }: { params: { id: string } }) {
             </h1>
           </div>
           
-          {/* EMBEDDED PLAYER */}
+          {/* ✅ 16:9 ASPECT RATIO */}
           <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl">
             <iframe
               src={embedUrl}
@@ -97,11 +75,6 @@ export default function WatchPage({ params }: { params: { id: string } }) {
               title="Video Player"
               sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
             />
-          </div>
-          
-          {/* Warning if embedding fails */}
-          <div className="mt-4 text-center text-gray-500 text-sm">
-            If the player doesn't load, VidKing may block embedded playback.
           </div>
         </div>
       </div>
