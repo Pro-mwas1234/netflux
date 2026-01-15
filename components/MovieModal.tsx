@@ -115,46 +115,49 @@ export default function MovieModal({ isOpen, onClose, mediaId, type }: MovieModa
                 <div className="text-gray-400 text-sm mb-4 max-h-32 overflow-y-auto hide-scrollbar">
                   {media.overview || 'No description available.'}
                 </div>
-
-                <div className="pt-3 border-t border-gray-800">
-                  {type === 'movie' ? (
-                    <a
-                      href={`https://www.vidking.net/embed/movie/${mediaId}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg flex items-center gap-1.5 transition-colors"
-                    >
-                      ▶️ Play Movie
-                    </a>
-                  ) : type === 'tv' && media.number_of_seasons ? (
-                    <div className="flex flex-col sm:flex-row gap-2">
-                      <select
-                        value={selectedSeason}
-                        onChange={(e) => setSelectedSeason(Number(e.target.value))}
-                        className="bg-gray-800 text-white text-sm px-3 py-2 rounded border border-gray-700 focus:ring-1 focus:ring-red-500"
-                      >
-                        {Array.from({ length: media.number_of_seasons }).map((_, i) => (
-                          <option key={i + 1} value={i + 1}>
-                            S{i + 1}
-                          </option>
-                        ))}
-                      </select>
-                      <a
-                        href={`https://www.vidking.net/embed/tv/${mediaId}/season/${selectedSeason}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
-                      >
-                        Watch S{selectedSeason}
-                      </a>
-                    </div>
-                  ) : null}
-                </div>
               </div>
             </div>
           </div>
         ) : (
           <div className="p-8 text-center text-red-400 text-sm">No data available</div>
+        )}
+
+        {/* ✅ STICKY ACTION BAR - Always visible at bottom */}
+        {media && !loading && (
+          <div className="sticky bottom-0 bg-gray-900/90 backdrop-blur-sm border-t border-gray-800 p-4">
+            {type === 'movie' ? (
+              <a
+                href={`https://www.vidking.net/embed/movie/${mediaId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full block text-center px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
+              >
+                ▶️ Play Movie
+              </a>
+            ) : type === 'tv' && media.number_of_seasons ? (
+              <div className="flex flex-col sm:flex-row gap-2">
+                <select
+                  value={selectedSeason}
+                  onChange={(e) => setSelectedSeason(Number(e.target.value))}
+                  className="bg-gray-800 text-white px-3 py-2.5 rounded border border-gray-700 focus:ring-1 focus:ring-red-500"
+                >
+                  {Array.from({ length: media.number_of_seasons }).map((_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      Season {i + 1}
+                    </option>
+                  ))}
+                </select>
+                <a
+                  href={`https://www.vidking.net/embed/tv/${mediaId}/season/${selectedSeason}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto block text-center px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
+                >
+                  Watch Season {selectedSeason}
+                </a>
+              </div>
+            ) : null}
+          </div>
         )}
       </div>
     </div>
