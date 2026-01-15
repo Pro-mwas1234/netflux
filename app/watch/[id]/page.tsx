@@ -10,33 +10,24 @@ export default function WatchPage({ params }: { params: { id: string } }) {
   const searchParams = useSearchParams();
   const [media, setMedia] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadMedia = async () => {
       try {
-        // ✅ Use API route (not direct TMDB call)
         const res = await fetch(`/api/media/${params.id}`);
         if (!res.ok) throw new Error('Failed to load media');
         const data = await res.json();
         setMedia(data);
       } catch (err) {
-        console.error('Failed to load media', err);
+        setError('Failed to load media details');
+        console.error(err);
       } finally {
         setLoading(false);
       }
     };
     loadMedia();
   }, [params.id]);
-
-  const openPlayer = () => {
-    const type = searchParams.get('type') || 'movie';
-    const season = searchParams.get('season') || '1';
-    const url = type === 'tv'
-      ? `https://www.vidking.net/embed/tv/${params.id}/season/${season}`
-      : `https://www.vidking.net/embed/movie/${params.id}`;
-    
-    window.open(url, '_blank', 'noopener,noreferrer');
-  };
 
   if (loading) {
     return (
@@ -52,37 +43,65 @@ export default function WatchPage({ params }: { params: { id: string } }) {
     );
   }
 
+  if (error) {
+    return (
+      <div className="min-h-screen bg-[#1f1e1d]">
+        <Header />
+        <div className="flex items-center justify-center min-h-[calc(100vh-80px)]">
+          <div className="text-center text-red-400">
+            <p>{error}</p>
+            <button 
+              onClick={() => window.location.reload()}
+              className="mt-4 px-4 py-2 bg-gray-800 rounded"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Construct embed URL
+  const type = searchParams.get('type') || 'movie';
+  const season = searchParams.get('season') || '1';
+  const embedUrl = type === 'tv'
+    ? `https://www.vidking.net/embed/tv/${params.id}/season/${season}`
+    : `https://www.vidking.net/embed/movie/${params.id}`;
+
   return (
     <div className="min-h-screen bg-[#1f1e1d]">
       <Header />
       <div className="p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex justify-between items-center mb-4">
             <Link 
               href="/" 
               className="text-red-500 hover:text-red-400 flex items-center gap-2"
             >
               &larr; Back to Home
             </Link>
-            <h1 className="text-xl font-bold text-white">
+            <h1 className="text-xl font-bold text-white truncate">
               {media?.title || media?.name}
-              {searchParams.get('type') === 'tv' && ` - Season ${searchParams.get('season')}`}
+              {type === 'tv' && ` - Season ${season}`}
             </h1>
           </div>
-
-          <div className="bg-gray-800/50 rounded-xl p-8 text-center">
-            <p className="text-gray-300 mb-6">
-              Video will open in a new tab to ensure proper playback
-            </p>
-            <button
-              onClick={openPlayer}
-              className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-lg flex items-center gap-3 mx-auto"
-            >
-              ▶️ Play Now
-            </button>
-            <p className="text-gray-500 mt-4 text-sm">
-              If the player doesn't open, check your popup blocker
-            </p>
+          
+          {/* EMBEDDED PLAYER */}
+          <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl">
+            <iframe
+              src={embedUrl}
+              className="w-full h-full"
+              allowFullScreen
+              allow="autoplay; encrypted-media"
+              title="Video Player"
+              sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+            />
+          </div>
+          
+          {/* Warning if embedding fails */}
+          <div className="mt-4 text-center text-gray-500 text-sm">
+            If the player doesn't load, VidKing may block embedded playback.
           </div>
         </div>
       </div>
