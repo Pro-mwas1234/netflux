@@ -2,26 +2,29 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import { fetchMovieById } from '@/lib/tmdb';
 
 export default function WatchPage({ params }: { params: { id: string } }) {
+  const searchParams = useSearchParams();
   const [media, setMedia] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [isTv, setIsTv] = useState(false);
-  const [season, setSeason] = useState(1);
+  const [playerUrl, setPlayerUrl] = useState('');
 
   useEffect(() => {
     const loadMedia = async () => {
       try {
-        // Extract type and season from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const type = urlParams.get('type') || 'movie';
-        const seasonNum = parseInt(urlParams.get('season') || '1');
+        const type = searchParams.get('type') || 'movie';
+        const season = searchParams.get('season') || '1';
         
-        setIsTv(type === 'tv');
-        setSeason(seasonNum);
+        // Construct VidKing URL
+        const url = type === 'tv'
+          ? `https://www.vidking.net/embed/tv/${params.id}/season/${season}`
+          : `https://www.vidking.net/embed/movie/${params.id}`;
+        
+        setPlayerUrl(url);
         
         const data = await fetchMovieById(params.id);
         setMedia(data);
@@ -32,7 +35,11 @@ export default function WatchPage({ params }: { params: { id: string } }) {
       }
     };
     loadMedia();
-  }, [params.id]);
+  }, [params.id, searchParams]);
+
+  const openPlayer = () => {
+    window.open(playerUrl, '_blank', 'noopener,noreferrer');
+  };
 
   if (loading) {
     return (
@@ -48,36 +55,37 @@ export default function WatchPage({ params }: { params: { id: string } }) {
     );
   }
 
-  const embedUrl = isTv 
-    ? `https://www.vidking.net/embed/tv/${params.id}/season/${season}`
-    : `https://www.vidking.net/embed/movie/${params.id}`;
-
   return (
     <div className="min-h-screen bg-[#1f1e1d]">
       <Header />
       <div className="p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-6">
             <Link 
               href="/" 
               className="text-red-500 hover:text-red-400 flex items-center gap-2"
             >
               &larr; Back to Home
             </Link>
-            <h1 className="text-xl font-bold text-white truncate">
+            <h1 className="text-xl font-bold text-white">
               {media?.title || media?.name}
-              {isTv && ` - Season ${season}`}
+              {searchParams.get('type') === 'tv' && ` - Season ${searchParams.get('season')}`}
             </h1>
           </div>
-          
-          <div className="aspect-video w-full bg-black rounded-xl overflow-hidden shadow-2xl">
-            <iframe
-              src={embedUrl}
-              className="w-full h-full"
-              allowFullScreen
-              allow="autoplay; encrypted-media"
-              title="Video Player"
-            />
+
+          <div className="bg-gray-800/50 rounded-xl p-8 text-center">
+            <p className="text-gray-300 mb-6">
+              Video will open in a new tab to ensure proper playback
+            </p>
+            <button
+              onClick={openPlayer}
+              className="px-8 py-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg text-lg flex items-center gap-3 mx-auto"
+            >
+              ▶️ Play Now
+            </button>
+            <p className="text-gray-500 mt-4 text-sm">
+              If the player doesn't open, check your popup blocker
+            </p>
           </div>
         </div>
       </div>
