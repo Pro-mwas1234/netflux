@@ -4,12 +4,11 @@
 import { useState, useEffect } from 'react';
 import MovieModal from './MovieModal';
 
-let globalModalOpen = false; // Track if any modal is open
+let globalModalOpen = false;
 
 export default function MovieCard({ movie, type = "movie" }: { movie: any; type?: string }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Close when another modal opens
   useEffect(() => {
     const handleGlobalModalOpen = () => {
       if (isModalOpen) setIsModalOpen(false);
@@ -27,7 +26,6 @@ export default function MovieCard({ movie, type = "movie" }: { movie: any; type?
 
   const openModal = () => {
     if (globalModalOpen) {
-      // Notify other cards to close
       window.dispatchEvent(new Event('global-modal-open'));
     }
     globalModalOpen = true;
